@@ -1,0 +1,38 @@
+CREATE TABLE Competition(
+competition_id int,
+ competition_name varchar(255),
+  world_record int, 
+set_date int,
+);
+
+
+CREATE TABLE Result(
+competition_id int,
+ sportsman_id int, 
+ result int, 
+ city varchar(255),
+ hold_date int,
+);
+
+CREATE TABLE Sportsman(
+sportsman_id int, 
+sportsman_name int,
+rank int,
+year_of_birth int,
+ personal_record int, 
+ country varchar(255)
+);
+
+//1972	10.07	 Valeriy Borzov (URS)	Munich
+//1974	9.9h	 Steve Williams (USA)	Los Angeles
+//2000	9.86	 Maurice Greene (USA)	Berlin
+INSERT INTO Competition(competition_id , competition_name , world_record , set_date )
+VALUES('01','run', '10.07', 1972),('02','run', '9.9','1974'),('04','run','9.86', '2000');
+
+Result(
+competition_id int,
+ sportsman_id int, 
+ result int, 
+ city varchar(255),
+ hold_date int,
+);
