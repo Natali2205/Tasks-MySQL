@@ -80,5 +80,17 @@ SELECT hold_date
 FROM Result
 WHERE LEFT(City, 1)='М';
 
+SELECT hold_date 
+FROM Sportsman
+ WHERE sportsman_name like 'С%' AND year_of_birth NOT LIKE '%6';
+ 
+ SELECT competition_name
+ FROM Competetions
+ WHERE competition_name like '%международные%' desc;
+ 
+ SELECT year_of_birth
+ FROM Sportsman
+ GROUP BY year_of_birth
+ FROM `table` GROUP BY name
 
 
