@@ -5,7 +5,6 @@ competition_id int,
 set_date int,
 );
 
-
 CREATE TABLE Result(
 competition_id int,
  sportsman_id int, 
@@ -32,8 +31,8 @@ VALUES
 INSERT INTO Result(competition_id, sportsman_id, result int, city, hold_date)
 VALUES
 ('01', '1002', '13',' 'Munich', '13 June 2014'),
-('02','0101','10', 'United States', '24 August 2003'),
-('03','0103','9','Moscov','2 September 2008);
+('02','1002','10', 'United States', '24 August 2003'),
+('03','1003','9','Moscov','2 September 2008);
 
 INSERT INTO Sportsman( sportsman_id int, sportsman_name int, rank int, year_of_birth int, personal_record, country varchar)
 VALUES
@@ -93,4 +92,19 @@ FROM Sportsman
  GROUP BY year_of_birth
  FROM `table` GROUP BY name
 
+SELECT COUNT(competition_id)
+FROM Competetions
+WHERE set_date='12-05-2014';
+
+SELECT MAX(result)
+FROM Result
+WHERE city='Moscov';
+
+SELECT MIN(year_of_birth)
+FROM Sportsman
+WHERE rank='1';
+
+SELECT sportsman_id
+FROM Sportsman LEFT JOIN Competition
+WHERE personal_record --set_date='2014-04-12';
 
