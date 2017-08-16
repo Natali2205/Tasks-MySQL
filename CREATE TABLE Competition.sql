@@ -1,40 +1,46 @@
-CREATE TABLE Competition(
-competition_id int,
- competition_name varchar(255),
-  world_record int, 
-set_date int,
+CREATE TABLE `Competition`(
+	`competition_id` INT(9) NOT NULL AUTO_INCREMENT,
+	`competition_name` varchar(255) NOT NULL,
+	`world_record` INT(9) NOT NULL, 
+	`set_date` INT(9) NOT NULL,
+	PRIMARY KEY(`competition_id`)
 );
 
-CREATE TABLE Result(
-competition_id int,
- sportsman_id int, 
- result int, 
- city varchar(255),
- hold_date int,
-);
+CREATE TABLE `Resultsports` (
+    `competition_id` INT(9) NOT NULL AUTO_INCREMENT,
+    `sportsman_id` int(9) NOT NULL,
+    `result` int(9) NOT NULL,
+    `city` varchar(255),
+    `hold_date` int(9) NOT NULL,
+    PRIMARY KEY (`sportsman_id`),
+    CONSTRAINT `FK_sportsmanRes` FOREIGN KEY (`competition_id`) REFERENCES Competition (`competition_id`)
+    );
 
-CREATE TABLE Sportsman(
-sportsman_id int, 
-sportsman_name varchar(255),
-rank int,
-year_of_birth int,
- personal_record int, 
- country varchar(255)
-);
+CREATE TABLE `Sportsman`(
+	`sportsman_id` int(9) NOT NULL AUTO_INCREMENT, 
+	`sportsman_name` varchar(255) NOT NULL,
+	`rank` int(9) NOT NULL,
+	`year_of_birth` int NOT NULL,
+	`personal_record` int NOT NULL,
+	`country` varchar(255) NOT NULL,
+	PRIMARY KEY (`sportsman_id`),
+	);
 
-INSERT INTO Competition(competition_id , competition_name , world_record , set_date )
+INSERT INTO Competition
+	(`competition_name` , `world_record` , `set_date` )
 VALUES
-('01','run', '10.07', 14-05-1972),
-('02','International run', '15','12-02-2015'),
-('04','run','9.86', '12-05-2010');
+	('run', '10.07', '1972-05-14'),
+	('International run', '15','2015-02-12'),
+	('run','9.86', '2010-05-12');
 
-INSERT INTO Result(competition_id, sportsman_id, result int, city, hold_date)
+INSERT INTO `resultsport`
+	(`sportsman_id`, `results`, `city`, `hold_date`)
 VALUES
-('01', '1002', '13',' 'Munich', '13 June 2014'),
-('02','1002','10', 'United States', '24 August 2003'),
-('03','1003','9','Moscov','2 September 2008);
+	('101', '13', 'Munich', '2014-06-13'),
+	('102','10', 'United States', '2003-07-24'),
+	('103','9','Moscov','2008-08-02');
 
-INSERT INTO Sportsman( sportsman_id int, sportsman_name int, rank int, year_of_birth int, personal_record, country varchar)
+INSERT INTO Sportsman( `sportsman_name`, `rank`, `year_of_birth` , `personal_record`, `country`)
 VALUES
 ('1002','Valeriy Borzov','1','1949', '10.14','Ukraine'),
 ('1001','Steve Williams','3','1953','15','United States'),
@@ -73,7 +79,7 @@ SELECT sportsman_name
 FROM Sportsman
 WHERE year_of_birth int='2000' AND rank NOT IN ('3', '7', '9');
 
-SELECT 76*(65−150);
+SELECT 76*(65− 150) as test;
 
 SELECT hold_date
 FROM Result
