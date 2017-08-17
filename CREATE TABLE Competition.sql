@@ -1,19 +1,19 @@
 CREATE TABLE `Competition`(
-	`competition_id` INT(9) NOT NULL AUTO_INCREMENT,
+	`PK_competition_id` INT(9) NOT NULL AUTO_INCREMENT,
 	`competition_name` varchar(255) NOT NULL,
 	`world_record` INT(9) NOT NULL, 
 	`set_date` INT(9) NOT NULL,
-	PRIMARY KEY(`competition_id`)
+	PRIMARY KEY(`PK_competition_id`)
 );
 
 CREATE TABLE `Resultsports` (
-    `competition_id` INT(9) NOT NULL AUTO_INCREMENT,
+    `FK_competition_id` INT(9) NOT NULL AUTO_INCREMENT,
     `sportsman_id` int(9) NOT NULL,
     `result` int(9) NOT NULL,
     `city` varchar(255),
     `hold_date` int(9) NOT NULL,
     PRIMARY KEY (`sportsman_id`),
-    CONSTRAINT `FK_sportsmanRes` FOREIGN KEY (`competition_id`) REFERENCES Competition (`competition_id`)
+    FOREIGN KEY (`FK_competition_id`) REFERENCES Competition (`PK_competition_id`)
     );
 
 CREATE TABLE `Sportsman`(
@@ -23,7 +23,7 @@ CREATE TABLE `Sportsman`(
 	`year_of_birth` int NOT NULL,
 	`personal_record` int NOT NULL,
 	`country` varchar(255) NOT NULL,
-	PRIMARY KEY (`sportsman_id`),
+	FOREIGN KEY (`FK_sportsman_id`) REFERENCES `Resultsports`(`FK_sportsman_id`)
 	);
 
 INSERT INTO Competition
@@ -77,7 +77,7 @@ WHERE result IN ('13', '25', '17', '9');
 
 SELECT sportsman_name
 FROM Sportsman
-WHERE year_of_birth int='2000' AND rank NOT IN ('3', '7', '9');
+WHERE year_of_birth='2000' AND rank NOT IN ('3', '7', '9');
 
 SELECT 76*(65− 150) as test;
 
