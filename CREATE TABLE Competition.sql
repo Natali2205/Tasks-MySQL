@@ -22,8 +22,8 @@ CREATE TABLE `Sportsman`(
 	`sportsman_name` VARCHAR(255) NOT NULL,
 	`rank` INT(9) NOT NULL,
 	`year_of_birth` DATETIME(6) NOT NULL,
-	`personal_record` INT NOT NULL,
-	`country` VARCHAR NOT NULL,
+	`personal_record` INT(9) NOT NULL,
+	`country` VARCHAR (255) NOT NULL,
     PRIMARY KEY (`sportsman_id`)
 	);
 
@@ -45,9 +45,9 @@ VALUES
 
 INSERT INTO `Sportsman`( `sportsman_name`, `rank`, `year_of_birth` , `personal_record`, `country`)
 VALUES
-('Valeriy Borzov','1','1949', '10.14','Ukraine'),
-('Steve Williams','3','1953','15','United States'),
-('Maurice Greene','1','1990', '25', 'Russia'),
+('Valeriy Borzov','1','1949-09-15', '10.14','Ukraine'),
+('Steve Williams','3','1953-04-12','15','United States'),
+('Maurice Greene','1','1990-02-10', '25', 'Russia'),
 ('Mike Bill','3','2014-04-12', '25', 'Russia');
 
 
@@ -94,15 +94,15 @@ WHERE `city` LIKE '[M]%';
 SELECT `hold_date`
 FROM `Resultsports`
 LEFT JOIN `Sportsman` ON `Sportsman.sportsman_id`=`Resultsports.sportsman_id`
- WHERE `sportsman_name` like 'С%' AND `year_of_birth` NOT LIKE '%6';
+WHERE `sportsman_name` like 'С%' AND `year_of_birth` NOT LIKE '%6';
  
- SELECT `competition_name`
- FROM `Competition`
- WHERE `competition_name` like '%International%' ;
+SELECT `competition_name`
+FROM `Competition`
+WHERE `competition_name` like '%International%' ;
  
- SELECT DISTINCT `year_of_birth`
- FROM `Sportsman`
- GROUP BY `year_of_birth`;
+SELECT DISTINCT `year_of_birth`
+FROM `Sportsman`
+GROUP BY `year_of_birth`;
 
 
 SELECT COUNT(  `competition_id` ) 
