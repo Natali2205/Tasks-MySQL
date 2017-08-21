@@ -129,17 +129,11 @@ FROM `Competition`
 WHERE `set_date` IN (SELECT `hold_date`
 							FROM `Resultsports`
 							WHERE `city`='Moscov');
-	--				
+
 SELECT `year_of_birth`
 FROM `Sportsman`
-WHERE `personal_record`> AVG(SELECT `results` FROM `Resultsports`
-							WHERE `city`=`Moscov`;
-							
-							SELECT `year_of_birth`
-							GROUP BY `year_of_birth`;
-FROM `Sportsman`
-LEFT JOIN `Resultsport` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
-WHERE `personal_record`>AVG(`results`) AND `city`=`Moscov`;--
+WHERE `personal_record`> (SELECT AVG(`results`) FROM `Resultsports`
+       WHERE `city`='Moscov');							
 					
 SELECT `sportsman_name`
 FROM `Sportsman`
@@ -147,5 +141,8 @@ WHERE `year_of_birth` IN (SELECT `set_date`
 							FROM `Competition`
 							WHERE `world_record`='12');					
 							
-SELECT 'Sportsman' +`sportsman_name`, 'res'+`results`
-FROM `Sportsman`;							
+
+SELECT CONCAT("спортсмен ", `sportsman_name`),CONCAT(" показав результат ", `results`), CONCAT("в місті ", `city`)	
+FROM `Sportsman`
+INNER JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`;
+						
