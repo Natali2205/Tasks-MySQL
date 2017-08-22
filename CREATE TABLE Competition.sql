@@ -194,7 +194,37 @@ INNER JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`compe
 SET `rank`='1'
 WHERE `personal_record`=`world_record`;
 
-SELECT  DATEDIFF(year,`year_of_birth`,GETDATE()) as `age`
+SELECT  TIMESTAMPDIFF(year,`year_of_birth`,CURDATE()) as `age`
 FROM `Sportsman`
-LEFT JOIN `Resultsports` ON `Sportsman`.`competition_id`=`Resultsports`.`competition_id`
+LEFT JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
 WHERE `city`='Moscov';
+
+UPDATE `Sportsman`
+SET `country`='Russia'
+WHERE `country`='Italy' AND (`rank`='1' OR `rank`='2');
+
+UPDATE `Competition`
+SET `competition_name`='run with an obstacle'
+WHERE  `competition_name`='run';
+
+UPDATE `Competition`
+LEFT JOIN `Resultsports` ON `Resultsports`.`competition_id`=`Competition`.`competition_id`
+SET `world_record`=`world_record`+2
+WHERE `hold_date`<'2005-03-15';
+
+UPDATE `Resultsports`
+SET `results`=`results`+2
+WHERE `hold_date`='2012-05-20' AND `results`<='45';
+
+DELETE `results`
+FROM `Competition`
+WHERE `city`='Moscov' AND `hold_date`<='%1980';
+
+DELETE `competition_name`, `competition_id`
+FROM `Competition`
+WhERE `results`='20';
+
+DELETE `results`
+FROM `Resultsports`
+LEFT JOIN `Sportsman` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
+WHERE `year_of_birth`='2001';
