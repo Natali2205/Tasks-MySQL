@@ -33,7 +33,8 @@ VALUES
 	('run', '10.07', '1972-05-14'),
 	('International run', '15','2016-02-12'),
 	('run','9.86', '2010-05-12'),
-	('International run', '12','2014-04-12');
+	('International run', '12','2014-04-12'),
+	('Regional run','13', '2000-05-12');
 
 INSERT INTO `Resultsports`
 	(`sportsman_id`,`competition_id`, `results`, `city`, `hold_date`)
@@ -48,7 +49,8 @@ VALUES
 ('Valeriy Borzov','1','1949-09-15', '10.14','Ukraine'),
 ('Steve Williams','3','2000-04-12','15','United States'),
 ('Maurice Greene','1','1990-02-10', '25', 'Russia'),
-('Claus Bill','3','2014-04-12', '25', 'Russia');
+('Claus Bill','3','2014-04-12', '25', 'Russia'),
+('Pavel Ivanov','2','2010-05-15','12','United States');
 
 
 SELECT*FROM `Sportsman`;
@@ -94,7 +96,7 @@ WHERE `city` LIKE '[M]%';
 SELECT `hold_date`
 FROM `Resultsports`
 LEFT JOIN `Sportsman` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
-WHERE `sportsman_name` LIKE 'С%' AND `year_of_birth` NOT LIKE '%6';--0--
+WHERE `sportsman_name` LIKE 'С%' AND `year_of_birth` NOT LIKE '%6';
  
 SELECT `competition_name`
 FROM `Competition`
@@ -145,4 +147,54 @@ WHERE `year_of_birth` IN (SELECT `set_date`
 SELECT CONCAT("спортсмен ", `sportsman_name`),CONCAT(" показав результат ", `results`), CONCAT("в місті ", `city`)	
 FROM `Sportsman`
 INNER JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`;
-						
+
+
+
+--27--
+SELECT `sportsman_name`
+FROM `Sportsman`
+WHERE `rank`<(SELECT AVG(`rank`) FROM `Sportsman` WHERE `year_of_birth`='2000');
+--тут повертає 0 рядків, хоч є 2000 рік і розряд вищий--
+--28--						
+SELECT *FROM ((`Sportsman`
+INNER JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`)
+INNER JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`competition_id`)
+WHERE `personal_record`=`world_record`;
+--0--
+--29--
+SELECT COUNT(`sportsman_name`)
+FROM ((`Sportsman`
+INNER JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`)
+INNER JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`competition_id`)
+WHERE `sportsman_name` LIKE '%Ivanov' AND `competition_name` LIKE 'Regional%';		
+--0--
+
+--30--
+SELECT `city`
+FROM `Resultsports`
+LEFT JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`competition_id`
+WHERE `world_record`=`results`;
+--0--			
+--31--
+SELECT MIN(`rank`)
+FROM `Sportsman`
+--..--
+--32--
+--33--
+SELECT `Sportsman_id`
+FROM `Sportsman`
+LEFT JOIN `Resultsports` ON `Sportsman`.`competition_id`=`Resultsports`.`competition_id`
+WHERE (SELECT MAX(COUNT(`competition_id`)));
+--..--
+
+--34--
+UPDATE   ((`Sportsman`
+INNER JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`)
+INNER JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`competition_id`)
+SET `rank`='1'
+WHERE `personal_record`=`world_record`;
+
+SELECT  DATEDIFF(year,`year_of_birth`,GETDATE()) as age
+FROM `Sportsman`
+LEFT JOIN `Resultsports` ON `Sportsman`.`competition_id`=`Resultsports`.`competition_id`
+WHERE `city`='Moscov';
