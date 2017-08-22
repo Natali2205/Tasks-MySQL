@@ -194,7 +194,7 @@ INNER JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`compe
 SET `rank`='1'
 WHERE `personal_record`=`world_record`;
 
-SELECT  DATEDIFF(year,`year_of_birth`,GETDATE()) as age
+SELECT  DATEDIFF(year,`year_of_birth`,GETDATE()) as `age`
 FROM `Sportsman`
 LEFT JOIN `Resultsports` ON `Sportsman`.`competition_id`=`Resultsports`.`competition_id`
 WHERE `city`='Moscov';
