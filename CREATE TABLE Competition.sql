@@ -225,7 +225,7 @@ WHERE `city`='Moscov';
 
 --36--
 UPDATE `Resultsports`
-SET DAY(`hold_date`)=DAY(`hold_date`)+4
+SET `hold_date` = DATE_ADD(`hold_date` , INTERVAL 4 DAY)
 WHERE `city`='Moscov';
 
 --37--
