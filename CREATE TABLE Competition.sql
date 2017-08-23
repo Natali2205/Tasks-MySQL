@@ -1,3 +1,4 @@
+--1--
 Drop table if exists `Competition`;
 CREATE TABLE `Competition`(
 	`competition_id` INT(9) NOT NULL AUTO_INCREMENT,
@@ -26,14 +27,14 @@ CREATE TABLE `Sportsman`(
 	`country` VARCHAR (255) NOT NULL,
     PRIMARY KEY (`sportsman_id`)
 	);
-
+--2--
 INSERT INTO `Competition`
 	(`competition_name` , `world_record` , `set_date` )
 VALUES
 	('run', '10.07', '1972-05-14'),
 	('International run', '15','2016-02-12'),
 	('run','9.86', '2010-05-12'),
-	('International run', '12','2014-04-12'),
+	('International run', '12','2014-05-12'),
 	('Regional run','13', '2000-05-12');
 
 INSERT INTO `Resultsports`
@@ -52,98 +53,120 @@ VALUES
 ('Claus Bill','3','2014-04-12', '25', 'Russia'),
 ('Pavel Ivanov','2','2010-05-15','12','United States');
 
-
+--4--
 SELECT*FROM `Sportsman`;
 
+--5--
 SELECT `competition_name`, `world_record` 
 FROM `Competition`;
 
+--6--
 SELECT `sportsman_name`
 FROM `Sportsman`
 WHERE `year_of_birth` LIKE '1990%';
 
+--7--
 SELECT `competition_name`, `world_record`
 FROM `Competition`
 WHERE `set_date` ='2010-05-12' OR `set_date` ='2010-05-15';
 
+--8--
 SELECT `hold_date`
 FROM `Resultsports`
 WHERE `city`='Moscov' AND `results`='10';
 
+--9--
 SELECT `sportsman_name`
 FROM `Sportsman`
 WHERE `personal_record` <>'25';
 
+--10--
 SELECT `competition_name`
 FROM `Competition`
 WHERE `world_record`='15' AND `set_date` <>'2015-02-12';
 
+--11--
 SELECT `city`
 FROM `Resultsports`
 WHERE `results` IN ('13', '25', '17', '9');
 
+--12--
 SELECT `sportsman_name`
 FROM `Sportsman`
 WHERE `year_of_birth` LIKE '2000%' AND `rank` NOT IN ('3', '7', '9');
 
+--13--
 SELECT 76*(65− 150) AS `test`;
 
+--14--
 SELECT `hold_date`
 FROM `Resultsports`
 LEFT JOIN `Sportsman` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
 WHERE `city` LIKE '[M]%';
 
+--15--
 SELECT `hold_date`
 FROM `Resultsports`
 LEFT JOIN `Sportsman` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
-WHERE `sportsman_name` LIKE 'С%' AND `year_of_birth` NOT LIKE '%6';
+WHERE `sportsman_name` LIKE 'С%' AND YEAR(`year_of_birth`) NOT LIKE '%6';
  
+ --16--
 SELECT `competition_name`
 FROM `Competition`
 WHERE `competition_name` LIKE '%International%' ;
  
+ --17--
 SELECT DISTINCT `year_of_birth`
 FROM `Sportsman`
 GROUP BY `year_of_birth`;
 
-
+--18--
 SELECT COUNT(  `competition_id` ) 
 FROM  `Competition` 
 WHERE  `set_date` =  '2010-05-12';
 
+--19--
 SELECT MAX(`results`)
 FROM `Resultsports`
 WHERE `city`='Moscov';
 
-SELECT MIN(`year_of_birth`)
+--20--
+SELECT MIN(YEAR(`year_of_birth`))
 FROM `Sportsman`
 WHERE `rank`='1';
 
-
+--21--
 SELECT `sportsman_name`
 FROM `Sportsman`
 WHERE `personal_record` IN (SELECT `world_record`
 							FROM `Competition`
 							WHERE `set_date`='2014-04-12');
-							
+--22--							
 SELECT `competition_name`
 FROM `Competition`
 WHERE `set_date` IN (SELECT `hold_date`
 							FROM `Resultsports`
 							WHERE `city`='Moscov');
-
+						
+--23--
+SELECT `sportsman_name`, AVG(`personal_record`)
+FROM `Sportsman`
+GROUP BY `sportsman_name`;
+					
+--24--
 SELECT `year_of_birth`
 FROM `Sportsman`
 WHERE `personal_record`> (SELECT AVG(`results`) FROM `Resultsports`
        WHERE `city`='Moscov');							
-					
+		
+--25--		
 SELECT `sportsman_name`
 FROM `Sportsman`
 WHERE `year_of_birth` IN (SELECT `set_date`
 							FROM `Competition`
 							WHERE `world_record`='12');					
 							
-
+--26--
 SELECT CONCAT("спортсмен ", `sportsman_name`),CONCAT(" показав результат ", `results`), CONCAT("в місті ", `city`)	
 FROM `Sportsman`
 INNER JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`;
@@ -194,37 +217,49 @@ INNER JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`compe
 SET `rank`='1'
 WHERE `personal_record`=`world_record`;
 
+--35--
 SELECT  TIMESTAMPDIFF(year,`year_of_birth`,CURDATE()) as `age`
 FROM `Sportsman`
 LEFT JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
 WHERE `city`='Moscov';
 
+--36--
+UPDATE `Resultsports`
+SET DAY(`hold_date`)=DAY(`hold_date`)+4
+WHERE `city`='Moscov';
+
+--37--
 UPDATE `Sportsman`
 SET `country`='Russia'
 WHERE `country`='Italy' AND (`rank`='1' OR `rank`='2');
 
+--38--
 UPDATE `Competition`
 SET `competition_name`='run with an obstacle'
 WHERE  `competition_name`='run';
 
+--39--
 UPDATE `Competition`
 LEFT JOIN `Resultsports` ON `Resultsports`.`competition_id`=`Competition`.`competition_id`
 SET `world_record`=`world_record`+2
 WHERE `hold_date`<'2005-03-15';
+--0--
 
+--40--
 UPDATE `Resultsports`
-SET `results`=`results`+2
+SET `results`=`results`-2
 WHERE `hold_date`='2012-05-20' AND `results`<='45';
 
-DELETE `results`
-FROM `Competition`
-WHERE `city`='Moscov' AND `hold_date`<='%1980';
+--41--
+DELETE FROM `Resultsports`
+WHERE `city`='Moscov' AND YEAR(`hold_date`)<='1980';
 
-DELETE `competition_name`, `competition_id`
-FROM `Competition`
+--42--
+DELETE FROM `Resultsports`
 WhERE `results`='20';
 
-DELETE `results`
-FROM `Resultsports`
+--43--
+DELETE FROM `Resultsports`
 LEFT JOIN `Sportsman` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`
 WHERE `year_of_birth`='2001';
+--error--
