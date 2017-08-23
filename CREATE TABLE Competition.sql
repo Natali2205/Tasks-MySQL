@@ -200,11 +200,19 @@ WHERE `world_record`=`results`;
 --0--			
 --31--
 SELECT MIN(`rank`)
-FROM `Sportsman`
---..--
+FROM ((`Sportsman`
+INNER JOIN `Resultsports` ON `Sportsman`.`sportsman_id`=`Resultsports`.`sportsman_id`)
+INNER JOIN `Competition` ON `Competition`.`competition_id`=`Resultsports`.`competition_id`)
+WHERE  EXISTS (SELECT `Competition_id` FROM `Competition` WHERE `Competition`.`competition_id`=`Resultsports`.`competition_id` );
 --32--
+SELECT `competition_name`
+FROM `Competition`
+LEFT JOIN `Resultsports` ON `Competition`.`competition_id`=`Resultsports`.`competition_id`
+WHERE MAX(`world_record`);
+--invalid use of group function--
+
 --33--
-SELECT `Sportsman_id`
+SELECT `sportsman_id`
 FROM `Sportsman`
 LEFT JOIN `Resultsports` ON `Sportsman`.`competition_id`=`Resultsports`.`competition_id`
 WHERE (SELECT MAX(COUNT(`competition_id`)));
